@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Share Api - Share files</title>
+</head>
+<body>
+    <h1>Web Share an Image</h1>
+    <input type="file" id="imageInput" accept="image/*">
+    <button id="shareImageBtn">Share this Image</button>
+  
+    <script>
+      const shareImageBtn = document.getElementById('shareImageBtn');
+      const imageInput = document.getElementById('imageInput');
+  
+      shareImageBtn.addEventListener('click', async () => {
+        const file = imageInput.files[0];
+  
+        if (!file) {
+          alert('Please select an image to share.');
+          return;
+        }
+  
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              title: 'Check out this image!',
+              text: 'Sharing an awesome image via Web Share API.',
+              files: [file]
+            });
+            alert('Image shared successfully!');
+          } catch (err) {
+            console.error('Error sharing the image:', err);
+          }
+        } else {
+          alert('Your browser does not support sharing files.');
+        }
+      });
+    </script>
+</body>
+</html>
